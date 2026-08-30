@@ -211,8 +211,8 @@
   .somm-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:69;opacity:0;pointer-events:none;transition:opacity .25s ease;}
   .somm-overlay.open{opacity:1;pointer-events:auto;}
 
-  .somm-panel{position:fixed;z-index:70;bottom:0;right:0;width:min(400px,100vw);height:min(640px,88vh);background:var(--panel);border:1px solid var(--line);border-radius:10px 10px 0 0;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .3s ease;overflow:hidden;}
-  .somm-panel.open{transform:translateY(0);}
+  .somm-panel{position:fixed;z-index:70;bottom:0;right:0;width:min(400px,100vw);height:min(640px,88vh);background:var(--panel);border:1px solid var(--line);border-radius:10px 10px 0 0;display:flex;flex-direction:column;transform:translateY(100%);visibility:hidden;transition:transform .3s ease,visibility 0s linear .3s;overflow:hidden;}
+  .somm-panel.open{transform:translateY(0);visibility:visible;transition:transform .3s ease,visibility 0s linear 0s;}
   @media(min-width:640px){
     .somm-panel{bottom:22px;right:22px;border-radius:10px;box-shadow:0 12px 40px rgba(0,0,0,.55);}
   }

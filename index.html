@@ -487,6 +487,16 @@
       <span class="atelier3d-bestseller-word">Lo Más Vendido</span>
     </div>
 
+    <div class="a3d-ribbon" id="a3d-ribbon" aria-live="polite">
+      <div class="a3d-ribbon-pill">
+        <span class="a3d-ribbon-line"></span>
+        <span class="a3d-ribbon-star" aria-hidden="true">✦</span>
+        <span class="a3d-ribbon-text">Los más vendidos</span>
+        <span class="a3d-ribbon-star" aria-hidden="true">✦</span>
+        <span class="a3d-ribbon-line a3d-ribbon-line-r"></span>
+      </div>
+    </div>
+
     <p class="atelier3d-hint" id="atelier3d-hint">Toca un perfume para descubrirlo</p>
 
     <button type="button" class="atelier3d-arrow atelier3d-arrow-left" id="atelier3d-prev" aria-label="Perfume anterior">‹</button>
@@ -584,6 +594,35 @@
     text-shadow:0 4px 30px rgba(201,162,71,.28);
   }
 
+  /* etiqueta fija «Los más vendidos»: se ve al abrir un perfume (en la vitrina ya está el título grande) */
+  .a3d-ribbon{
+    position:absolute; top:26px; left:50%; transform:translate(-50%,-6px);
+    z-index:6; pointer-events:none; display:flex; flex-direction:column; align-items:center; gap:7px;
+    opacity:0; transition:opacity .6s ease, transform .6s ease;
+  }
+  .a3d-ribbon.is-active{ opacity:1; transform:translate(-50%,0); }
+  .a3d-ribbon-pill{
+    display:flex; align-items:center; gap:10px; padding:8px 18px; border-radius:999px;
+    background:linear-gradient(180deg,rgba(18,14,10,.62),rgba(8,6,4,.55));
+    border:1px solid rgba(224,187,109,.42);
+    box-shadow:0 8px 28px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,236,190,.12);
+    -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
+    white-space:nowrap;
+  }
+  .a3d-ribbon-line{ width:22px; height:1px; background:linear-gradient(90deg,transparent,#c9a247); }
+  .a3d-ribbon-line-r{ background:linear-gradient(90deg,#c9a247,transparent); }
+  .a3d-ribbon-star{ font-size:9px; color:#e0bb6d; line-height:1; }
+  .a3d-ribbon-text{
+    font-family:'Jost',sans-serif; font-size:11px; font-weight:500; letter-spacing:.34em; text-transform:uppercase;
+    padding-left:.34em;
+    background:linear-gradient(100deg,#c9a247 0%,#f8ecc9 30%,#e0bb6d 45%,#c9a247 60%,#f8ecc9 80%,#c9a247 100%);
+    background-size:250% 100%; background-position:100% 0;
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    animation:a3dShine 5.5s ease-in-out infinite;
+  }
+  @keyframes a3dShine{ 0%,55%{ background-position:100% 0; } 100%{ background-position:-150% 0; } }
+  @media (prefers-reduced-motion: reduce){ .a3d-ribbon-text{ animation:none; background-position:50% 0; } }
+
   .atelier3d-hint{
     position:absolute; bottom:34px; left:50%; transform:translateX(-50%);
     font-size:12.5px; letter-spacing:.04em; color:#948a7a; z-index:5; margin:0;
@@ -679,6 +718,12 @@
       flex:none;
     }
     .atelier3d-brand{ top:20px; left:20px; }
+    /* en el móvil el nombre de la tienda ya está justo encima: su sitio lo ocupa la etiqueta */
+    .atelier3d-brand{ display:none; }
+    .a3d-ribbon{ top:16px; gap:5px; }
+    .a3d-ribbon-pill{ padding:7px 14px; gap:8px; }
+    .a3d-ribbon-line{ width:14px; }
+    .a3d-ribbon-text{ font-size:10px; letter-spacing:.28em; padding-left:.28em; }
     .atelier3d-bestseller{ top:12%; gap:6px; }
     .atelier3d-bestseller-eyebrow{ font-size:9.5px; letter-spacing:.3em; }
     .atelier3d-hint{ bottom:24px; }
@@ -931,6 +976,7 @@ function initAtelier(){
   const bgLayers = root.querySelectorAll(".atelier3d-bg");
   const hintEl = document.getElementById("atelier3d-hint");
   const bestsellerEl = document.getElementById("atelier3d-bestseller");
+  const ribbonEl = document.getElementById("a3d-ribbon");
   const prevBtn = document.getElementById("atelier3d-prev");
   const nextBtn = document.getElementById("atelier3d-next");
   const backBtn = document.getElementById("atelier3d-back");
@@ -1043,6 +1089,7 @@ function initAtelier(){
     nextBtn.classList.toggle("is-active", visible);
     hintEl.classList.toggle("is-hidden", visible);
     if(bestsellerEl) bestsellerEl.classList.toggle("is-hidden", visible);
+    if(ribbonEl) ribbonEl.classList.toggle("is-active", visible);
   }
 
   const scene = new THREE.Scene();

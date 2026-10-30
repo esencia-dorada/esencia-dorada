@@ -193,6 +193,13 @@
   .pm-info{padding:8px 4px 28px;flex:1;display:flex;flex-direction:column;gap:15px;min-width:0;}
   .pm-badges{display:flex;gap:6px;flex-wrap:wrap;}
   .pm-info h2{font-family:'Cormorant Garamond',serif;font-size:30px;color:var(--ink);line-height:1.2;padding-right:20px;}
+  .pm-viral{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;width:max-content;margin:2px 0 4px;
+    padding:6px 14px 6px 10px;border-radius:999px;background:linear-gradient(180deg,#221a12,#140f0a);
+    border:1px solid rgba(201,162,71,.55);box-shadow:0 4px 14px rgba(40,25,10,.18);}
+  .pm-viral svg{width:14px;height:14px;flex:none;}
+  .pm-viral span{font-family:'Jost',sans-serif;font-size:11px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;
+    background:linear-gradient(100deg,#c9a247 0%,#f8ecc9 35%,#e0bb6d 55%,#c9a247 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;}
   .pm-ml{color:var(--gold-soft);font-size:13.5px;letter-spacing:.04em;}
   .pm-price-wrap{display:flex;align-items:baseline;gap:10px;}
   .pm-price{font-family:'Cormorant Garamond',serif;font-size:30px;color:var(--gold-soft);font-weight:600;}
@@ -8194,6 +8201,9 @@ function openProduct(id){
   location.hash = "p" + id;
 }
 
+// perfumes virales de TikTok: llevan el sello en su ficha
+const VIRALES_TIKTOK = new Set(["Khamrah", "Khamrah Qahwa", "Yara", "Eclaire", "Asad", "Asad Negro", "Negro Árabe", "Club De Nuit Intenso", "9 PM Afnan", "Odyssey Mandarin Sky", "Liquid Brun", "Liquid Brun Limited Edition", "Noche De Salida Afnan", "Asad Bourboun"]);
+const VIRAL_HTML = `<div class="pm-viral"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#e0bb6d" d="M16.6 5.82A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 1 1-2.59-2.6c.27 0 .53.04.77.12V9.77a5.7 5.7 0 0 0-.77-.05 5.69 5.69 0 1 0 5.69 5.68V9.01a7.35 7.35 0 0 0 4.3 1.38V7.3a4.3 4.3 0 0 1-3.25-1.48z"/></svg><span>Viral en TikTok</span></div>`;
 function renderProductPage(id){
   const p = productos.find(x => x.id === id);
   if(!p){ closeProductModal(); return; }
@@ -8204,6 +8214,7 @@ function renderProductPage(id){
     </div>
     <div class="pm-info">
       <h2>${esc(cleanProductName(p))}</h2>
+      ${VIRALES_TIKTOK.has(p.nombre) ? VIRAL_HTML : ""}
       ${p.ml ? `<div class="pm-ml">Formato: ${esc(p.ml)}</div>` : ""}
       <div class="pm-price-wrap">
         <div class="pm-price">${fmt(p.precio)}</div>
